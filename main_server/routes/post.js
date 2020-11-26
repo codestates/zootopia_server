@@ -4,10 +4,10 @@ const router = express.Router();
 const postController = require('../controllers/post/index.js');
 
 // post
-router.get('/', postController.get);
-router.post('/', postController.post);
-router.patch('/', postController.patch);
-router.delete('/', postController.delete);
+router.get('/', postController.post.get);
+router.post('/', postController.post.post);
+router.patch('/', postController.post.patch);
+router.delete('/', postController.post.delete);
 
 // post/comment
 router.post('/comment', postController.comment.post);
