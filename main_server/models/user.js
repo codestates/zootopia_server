@@ -13,8 +13,14 @@ module.exports = (sequelize, DataTypes) => {
   }
   User.init(
     {
-      email: DataTypes.STRING,
-      petName: DataTypes.STRING,
+      email: {
+        type: DataTypes.STRING,
+        unique: true,
+      },
+      petName: {
+        type: DataTypes.STRING,
+        unique: true,
+      },
       breed: DataTypes.STRING,
       thumbnail: DataTypes.STRING,
       photo: DataTypes.STRING,

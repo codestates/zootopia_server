@@ -6,9 +6,6 @@ const userController = require('../controllers/user/index.js');
 // delete Account
 router.delete('/', userController.user.delete);
 
-// Guest signin
-router.get('/guest', userController.guest.get);
-
 // Change petName
 router.patch('/petname', userController.petname.patch);
 
