@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(Post);
       Post.belongsTo(User, {
         foreignKey: 'userId',
+        onDelete: 'CASCADE',
       });
     }
   }

@@ -12,12 +12,14 @@ module.exports = (sequelize, DataTypes) => {
       Post.hasMany(Comment);
       Comment.belongsTo(Post, {
         foreignKey: 'postId',
+        onDelete: 'CASCADE',
       });
 
       // User:Comment 1:N Association
       User.hasMany(Comment);
       Comment.belongsTo(User, {
         foreignKey: 'userId',
+        onDelete: 'CASCADE',
       });
     }
   }
