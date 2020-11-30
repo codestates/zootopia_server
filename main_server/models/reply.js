@@ -12,12 +12,14 @@ module.exports = (sequelize, DataTypes) => {
       Comment.hasMany(Reply);
       Reply.belongsTo(Comment, {
         foreignKey: 'commentId',
+        onDelete: 'CASCADE',
       });
 
       // User:Reply 1:N Association
       User.hasMany(Reply);
       Reply.belongsTo(User, {
         foreignKey: 'userId',
+        onDelete: 'CASCADE',
       });
     }
   }
