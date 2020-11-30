@@ -10,11 +10,15 @@ module.exports = {
       { expiresIn: '1h' },
     );
   },
-  verify: (token) => {
+  //
+  verifyTokenId: (req, res, next) => {
     try {
-      return jwt.verify(token, process.env.JWT_SECRET_KEY);
+      const decoded = jwt.verify(req.cookies.token, process.env.JWT_SECRET_KEY);
+      console.log('================== token verified!');
+      req.userId = decoded.id;
+      next();
     } catch (error) {
-      throw error;
+      return res.status(401).json({ error: '401 Unauthorized' });
     }
   },
 };
