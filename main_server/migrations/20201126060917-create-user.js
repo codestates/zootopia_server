@@ -15,6 +15,7 @@ module.exports = {
       petName: {
         allowNull: false,
         type: Sequelize.STRING,
+        unique: true,
       },
       breed: {
         allowNull: false,
