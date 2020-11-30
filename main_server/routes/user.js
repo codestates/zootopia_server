@@ -10,9 +10,9 @@ router.delete('/', userController.user.delete);
 router.patch('/petname', userController.petname.patch);
 
 // Change photo
-router.patch('./photo', userController.photo.patch);
+router.post('/photo', userController.photo.post);
 
 // Change breed
-router.patch('./breed', userController.breed.patch);
+router.patch('/breed', userController.breed.patch);
 
 module.exports = router;
