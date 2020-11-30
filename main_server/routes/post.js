@@ -3,8 +3,13 @@ const router = express.Router();
 //
 const postController = require('../controllers/post/index.js');
 
+// grid
+router.get('/getgridview', postController.grid.getGridView); /* 본인정보 */
+router.get('/getgridview/:id', postController.grid.getGridViewId);
+router.get('/getlatest', postController.grid.getLatest);
+
 // post
-router.get('/', postController.post.get);
+router.get('/:postId', postController.post.get);
 router.post('/', postController.post.post);
 router.patch('/', postController.post.patch);
 router.delete('/', postController.post.delete);
