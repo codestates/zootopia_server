@@ -53,6 +53,7 @@ module.exports = async (req, res) => {
       })
       .redirect(`http://localhost:3001`);
   } catch (error) {
-    throw error;
+    console.error(error);
+    res.status(500).end();
   }
 };

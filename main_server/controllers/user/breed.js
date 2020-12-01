@@ -7,7 +7,7 @@ module.exports = {
     const { breed } = req.body;
 
     try {
-      const updatedBreed = await User.update(
+      await User.update(
         {
           breed,
         },
@@ -17,11 +17,11 @@ module.exports = {
           },
         },
       );
-
-      // console.log(updatedBreed[0]);
       res.status(201).json({ msg: 'breed updated' });
+      //
     } catch (error) {
-      throw error;
+      console.error(error);
+      res.status(400).end();
     }
   },
 };

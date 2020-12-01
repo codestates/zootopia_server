@@ -13,7 +13,8 @@ module.exports = {
       res.status(201).json({ msg: 'user deleted' });
       //
     } catch (error) {
-      throw error;
+      console.error(error);
+      res.status(400).end();
     }
   },
 };

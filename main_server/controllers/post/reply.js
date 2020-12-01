@@ -11,7 +11,8 @@ module.exports = {
       res.status(201).json({ replyId: replyCreated.id });
       //
     } catch (error) {
-      throw error;
+      console.error(error);
+      res.status(400).end();
     }
   },
 
@@ -38,7 +39,8 @@ module.exports = {
       res.status(201).json({ msg: 'reply updated' });
       //
     } catch (error) {
-      throw error;
+      console.error(error);
+      res.status(400).end();
     }
   },
 
@@ -57,7 +59,8 @@ module.exports = {
       res.status(200).json({ msg: 'reply deleted' });
       //
     } catch (error) {
-      throw error;
+      console.error(error);
+      res.status(400).end();
     }
   },
 };

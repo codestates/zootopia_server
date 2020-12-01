@@ -4,9 +4,8 @@ const makeProfile = require('../../utilities/makeProfile');
 //
 const { User } = require('../../models');
 //
-module.exports = {
-  // guest signin
-  get: async (req, res) => {
+module.exports = async (req, res) => {
+  try {
     const userCreated = await User.create({
       ...makeProfile.guest(),
     });
@@ -23,5 +22,8 @@ module.exports = {
         // sameSite: 'none',
       })
       .json({ msg: 'success' });
-  },
+  } catch (error) {
+    console.error(error);
+    res.status(400).end();
+  }
 };
