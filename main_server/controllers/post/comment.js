@@ -11,7 +11,8 @@ module.exports = {
       res.status(201).json({ commentId: commentCreated.id });
       //
     } catch (error) {
-      throw error;
+      console.error(error);
+      res.status(400).end();
     }
   },
 
@@ -39,7 +40,8 @@ module.exports = {
       res.status(201).json({ msg: 'comment updated' });
       //
     } catch (error) {
-      throw error;
+      console.error(error);
+      res.status(400).end();
     }
   },
 
@@ -59,7 +61,8 @@ module.exports = {
       res.status(200).json({ msg: 'comment deleted' });
       //
     } catch (error) {
-      throw error;
+      console.error(error);
+      res.status(400).end();
     }
   },
 };
