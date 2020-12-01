@@ -1,30 +1,39 @@
 const express = require('express');
 const router = express.Router();
-//
+const upload = require('../utilities/multer-transform');
+
 const postController = require('../controllers/post/index.js');
 
-// grid
+// post/comment
+router
+  .route('/comment')
+  .post(postController.comment.post)
+  .patch(postController.comment.patch)
+  .delete(postController.comment.delete);
+
+// post/reply
+router
+  .route('/reply')
+  .post(postController.reply.post)
+  .patch(postController.reply.patch)
+  .delete(postController.reply.delete);
+
+// post
+router
+  .route('/')
+  .post(upload.array('image') /* 필요시 fields로 */, postController.post.post)
+  .patch(postController.post.patch)
+  .delete(postController.post.delete);
+
+// post/:postId
+router.get('/:postId', postController.post.get);
+
+// post/togglelike
+router.post('/togglelike', postController.toggleLike.post);
+
+// /post/getgridview
 router.get('/getgridview', postController.grid.getGridView); /* 본인정보 */
 router.get('/getgridview/:id', postController.grid.getGridViewId);
 router.get('/getlatest', postController.grid.getLatest);
-
-// post
-router.get('/:postId', postController.post.get);
-router.post('/', postController.post.post);
-router.patch('/', postController.post.patch);
-router.delete('/', postController.post.delete);
-
-// post/comment
-router.post('/comment', postController.comment.post);
-router.patch('/comment', postController.comment.patch);
-router.delete('/comment', postController.comment.delete);
-
-// post/reply
-router.post('/reply', postController.reply.post);
-router.patch('/reply', postController.reply.patch);
-router.delete('/reply', postController.reply.delete);
-
-// toggle LIKE
-router.post('/togglelike', postController.toggleLike.post);
 
 module.exports = router;
