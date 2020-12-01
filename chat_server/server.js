@@ -6,6 +6,8 @@ const cookieParser = require('cookie-parser');
 dotenv.config();
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
+const errorHandlers = require("./middleware/errorHandler");
+const webSocket = require('./socket');
 
 const app = express();
 app.set('port', process.env.PORT);
@@ -20,7 +22,6 @@ app.use(
       credentials: true,
     }),
   );
-
   connect();
 // verify token 미들웨어 = 쿠키를 통해서 token을 전달한다는 점을 이해하기 
   app.use((req,res,next)=>{
@@ -31,10 +32,19 @@ app.use(
         next();
       } catch (error) {
         return res.status(401).json({ error: '401 Unauthorized' });
-      }
-    
+      }    
   })
 
-app.listen(app.get('port'), ()=> {
+//에러 핸들링 미들웨어 
+app.use(errorHandlers.notFound);
+if (process.env.ENV === "development") {
+  app.use(errorHandlers.developmentErrors);
+} else {
+  app.use(errorHandlers.productionErrors);
+}
+
+const server = app.listen(app.get('port'), ()=> {
     console.log('app is listen on', app.get('port'))
 })
+
+webSocket(server, app)
