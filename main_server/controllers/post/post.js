@@ -1,6 +1,3 @@
-const express = require('express');
-const router = express.Router();
-const upload = require('../../utilities/multer-transform');
 const {
   Post,
   User,
@@ -121,9 +118,8 @@ module.exports = {
   },
 
   // new post
-  post: router.use('/', upload.array('image'), async (req, res) => {
+  post: async (req, res) => {
     const userId = req.userId;
-
     const { text } = req.body;
     const transforms = req.files.map((el) => el.transforms);
 
@@ -149,7 +145,7 @@ module.exports = {
       postId: postCreated.id,
       thumbnail: postCreated.thumbnail,
     });
-  }),
+  },
 
   // update post *
   patch: async (req, res) => {
