@@ -14,22 +14,22 @@ module.exports = {
       thumbnail: transforms.filter((el) => el.id === 'thumbnail')[0].location,
     };
 
-    const photoUpdated = await User.update(
-      {
-        ...photos,
-      },
-      {
-        where: {
-          id: userId,
+    try {
+      await User.update(
+        {
+          ...photos,
         },
-      },
-    );
-
-    // console.log(photoUpdated[0]);
-    if (photoUpdated[0] === 1) {
+        {
+          where: {
+            id: userId,
+          },
+        },
+      );
       res.status(201).json({ ...photos });
-    } else {
-      res.status(400).json({ error: '400' });
+      //
+    } catch (error) {
+      console.error(error);
+      res.status(400).end();
     }
   }),
 };

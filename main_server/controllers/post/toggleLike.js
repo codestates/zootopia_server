@@ -18,7 +18,8 @@ module.exports = {
         res.status(201).send('1');
         //
       } catch (error) {
-        throw error;
+        console.error(error);
+        res.status(400).end();
       }
       //
     } else {
@@ -32,7 +33,8 @@ module.exports = {
         res.status(201).send('-1');
         //
       } catch (error) {
-        throw error;
+        console.error(error);
+        res.status(400).end();
       }
     }
   },
