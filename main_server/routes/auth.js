@@ -10,6 +10,8 @@ router.get('/github', authController.github);
 // router.get('/google', authController.google);
 
 // Guest signin
-router.get('/guest', authController.guest.get);
+router.get('/guest', authController.guest);
+
+router.post('/logout', authController.logout);
 
 module.exports = router;
