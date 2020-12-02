@@ -126,18 +126,24 @@ module.exports = {
   post: async (req, res) => {
     const userId = req.userId;
     const { text } = req.body;
-    const transforms = req.files.map((el) => el.transforms);
 
     const pictures = {
-      picture_1: transforms[0].filter((el) => el.id === 'original')[0].location,
+      picture_1: req.files['image1'][0].transforms.filter(
+        (el) => el.id === 'original',
+      )[0].location,
       picture_2:
-        transforms[1] &&
-        transforms[1].filter((el) => el.id === 'original')[0].location,
+        req.files['image2'] &&
+        req.files['image2'][0].transforms.filter(
+          (el) => el.id === 'original',
+        )[0].location,
       picture_3:
-        transforms[2] &&
-        transforms[2].filter((el) => el.id === 'original')[0].location,
-      thumbnail: transforms[0].filter((el) => el.id === 'thumbnail')[0]
-        .location,
+        req.files['image3'] &&
+        req.files['image3'][0].transforms.filter(
+          (el) => el.id === 'original',
+        )[0].location,
+      thumbnail: req.files['image1'][0].transforms.filter(
+        (el) => el.id === 'thumbnail',
+      )[0].location,
     };
 
     try {

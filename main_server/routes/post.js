@@ -21,7 +21,15 @@ router
 // post
 router
   .route('/')
-  .post(upload.array('image') /* 필요시 fields로 */, postController.post.post)
+  .post(
+    // middleware / Multer
+    upload.fields([
+      { name: 'image1', maxCount: 1 },
+      { name: 'image2', maxCount: 1 },
+      { name: 'image3', maxCount: 1 },
+    ]),
+    postController.post.post,
+  )
   .patch(postController.post.patch)
   .delete(postController.post.delete);
 
@@ -32,8 +40,7 @@ router.get('/:postId', postController.post.get);
 router.post('/togglelike', postController.toggleLike.post);
 
 // /post/getgridview
-router.get('/getgridview', postController.grid.getGridView); /* 본인정보 */
-router.get('/getgridview/:id', postController.grid.getGridViewId);
-router.get('/getlatest', postController.grid.getLatest);
+router.get('/grid/latest', postController.grid.getLatest);
+router.get('/grid/:userId', postController.grid.getGridById);
 
 module.exports = router;
