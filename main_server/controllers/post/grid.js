@@ -1,6 +1,10 @@
 //
 module.exports = {
-  getGridView: (req, res) => {},
-  getGridViewId: (req, res) => {},
-  getLatest: (req, res) => {},
+  getLatest: (req, res) => {
+    //
+  },
+
+  getGridById: (req, res) => {
+    // params 0이면 본인 데이터
+  },
 };
