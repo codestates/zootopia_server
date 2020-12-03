@@ -40,7 +40,7 @@ router.get('/:postId', postController.post.get);
 router.post('/togglelike', postController.toggleLike.post);
 
 // /post/getgridview
-router.get('/grid/latest', postController.grid.getLatest);
+router.post('/grid/latest', postController.grid.getLatest);
 router.get('/grid/:userId', postController.grid.getGridById);
 
 module.exports = router;
