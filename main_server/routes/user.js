@@ -3,7 +3,8 @@ const router = express.Router();
 //
 const userController = require('../controllers/user/index.js');
 
-// delete Account
+// User
+router.get('/:userId', userController.user.get);
 router.delete('/', userController.user.delete);
 
 // Change petName
