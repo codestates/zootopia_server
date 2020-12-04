@@ -5,8 +5,8 @@ module.exports = {
   original: () => {
     return sharp()
       .resize({
-        width: 512,
-        height: 512,
+        width: 1024,
+        height: 1024,
         fit: 'inside',
       })
       .toFormat('jpeg')
@@ -19,8 +19,8 @@ module.exports = {
   thumbnail: () => {
     return sharp()
       .resize({
-        width: 64,
-        height: 64,
+        width: 256,
+        height: 256,
         fit: 'inside',
       })
       .toFormat('jpeg')

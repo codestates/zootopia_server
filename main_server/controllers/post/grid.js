@@ -11,13 +11,19 @@ module.exports = {
       userId = { [Op.is]: true };
     }
 
+    if (from === 0) {
+      // from 0으로 들어오면, 가장 최신데이터부터
+      id = { [Op.is]: true };
+    } else {
+      // from 값이 있다면 해당 from값부터 기준으로
+      id = { [Op.lte]: from };
+    }
+
     try {
       const gridData = await Post.findAll({
         where: {
           userId,
-          id: {
-            [Op.lte]: from,
-          },
+          id,
         },
         order: [['id', 'DESC']],
         attributes: [['id', 'postId'], 'thumbnail'],
