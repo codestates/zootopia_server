@@ -33,6 +33,7 @@ module.exports = async (req, res) => {
     const user = await User.findOrCreate({
       where: {
         email: getData.data[0].email,
+        type: 'github',
       },
       defaults: {
         // petName, breed, thumbnail, photo 생성함수
