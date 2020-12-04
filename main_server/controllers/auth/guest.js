@@ -17,9 +17,10 @@ module.exports = async (req, res) => {
     res //
       .status(200)
       .cookie('token', token, {
-        // httpOnly: true,
-        // secure: true,
-        // sameSite: 'none',
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+        domain: '.codestates-project.tk',
       })
       .json({ msg: 'success' });
   } catch (error) {
