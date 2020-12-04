@@ -47,11 +47,12 @@ module.exports = async (req, res) => {
     res
       .status(302)
       .cookie('token', token, {
-        // httpOnly: true,
-        // secure: true,
-        // sameSite: 'none',
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+        domain: '.codestates-project.tk',
       })
-      .redirect(`http://localhost:3001`);
+      .redirect(`https://www.codestates-project.tk`);
   } catch (error) {
     console.error(error);
     res.status(500).end();
