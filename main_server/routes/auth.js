@@ -7,7 +7,7 @@ const authController = require('../controllers/auth/index.js');
 router.get('/github', authController.github);
 
 // Google
-// router.get('/google', authController.google);
+router.get('/google', authController.google);
 
 // Guest signin
 router.get('/guest', authController.guest);
