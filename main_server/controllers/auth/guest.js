@@ -8,6 +8,7 @@ module.exports = async (req, res) => {
   try {
     const userCreated = await User.create({
       ...makeProfile.guest(),
+      type: 'guest',
     });
 
     // console.log(userCreated.toJSON());

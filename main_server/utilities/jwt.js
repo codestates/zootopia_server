@@ -21,4 +21,7 @@ module.exports = {
       return res.status(401).json({ error: '401 Unauthorized' });
     }
   },
+  decode: (token) => {
+    return jwt.decode(token);
+  },
 };
