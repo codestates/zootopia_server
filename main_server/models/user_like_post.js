@@ -12,12 +12,14 @@ module.exports = (sequelize, DataTypes) => {
         through: User_like_post,
         foreignKey: 'userId',
         otherKey: 'postId',
+        onDelete: 'CASCADE',
       });
 
       Post.belongsToMany(User, {
         through: User_like_post,
         foreignKey: 'postId',
         otherKey: 'userId',
+        onDelete: 'CASCADE',
       });
     }
   }

@@ -12,6 +12,9 @@ module.exports = {
   get: (req, res) => {
     const userId = req.userId;
     const { postId } = req.params;
+    if (postId === undefined) {
+      res.status(400).end();
+    }
 
     try {
       const DATA = Post.findOne({
@@ -118,7 +121,7 @@ module.exports = {
         });
     } catch (error) {
       console.error(error);
-      res.status(400).end();
+      res.status(500).end();
     }
   },
 
@@ -126,6 +129,9 @@ module.exports = {
   post: async (req, res) => {
     const userId = req.userId;
     const { text } = req.body;
+    if (!text || !req.files['image1'][0].transforms) {
+      return res.status(400).end();
+    }
 
     const pictures = {
       picture_1: req.files['image1'][0].transforms.filter(
@@ -149,8 +155,8 @@ module.exports = {
     try {
       const postCreated = await Post.create({
         text,
-        ...pictures,
         userId,
+        ...pictures,
       });
 
       res.status(201).json({
@@ -159,7 +165,7 @@ module.exports = {
       });
     } catch (error) {
       console.error(error);
-      res.status(400).end();
+      res.status(500).end();
     }
   },
 
@@ -167,6 +173,9 @@ module.exports = {
   patch: async (req, res) => {
     const userId = req.userId;
     const { postId, text } = req.body;
+    if (!postId || !text) {
+      return res.status(400).end();
+    }
 
     try {
       const postUpdated = await Post.update(
@@ -181,13 +190,14 @@ module.exports = {
         },
       );
       if (postUpdated[0] !== 1) {
-        return res.status(403).json({ error: '403 Forbidden' });
+        // 해당 유저가 작성한 포스트 중 검색 불가
+        return res.status(400).end();
       }
       res.status(201).json({ msg: 'post updated' });
       //
     } catch (error) {
       console.error(error);
-      res.status(400).end();
+      res.status(500).end();
     }
   },
 
@@ -195,19 +205,26 @@ module.exports = {
   delete: async (req, res) => {
     const userId = req.userId;
     const { postId } = req.body;
+    if (!postId) {
+      return res.status(400).end();
+    }
 
     try {
       const postDeleted = await Post.destroy({
-        where: { id: postId, userId },
+        where: {
+          id: postId,
+          userId,
+        },
       });
 
       if (postDeleted !== 1) {
+        // 해당 유저가 작성한 포스트 중 검색 불가
         return res.status(403).json({ error: '403 Forbidden' });
       }
       res.status(200).json({ msg: 'post deleted' });
     } catch (error) {
       console.error(error);
-      res.status(400).end();
+      res.status(500).end();
     }
   },
 };

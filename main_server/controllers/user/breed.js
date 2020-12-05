@@ -5,6 +5,9 @@ module.exports = {
   patch: async (req, res) => {
     const userId = req.userId;
     const { breed } = req.body;
+    if (!breed) {
+      return res.status(400).end();
+    }
 
     try {
       await User.update(
@@ -21,7 +24,7 @@ module.exports = {
       //
     } catch (error) {
       console.error(error);
-      res.status(400).end();
+      res.status(500).end();
     }
   },
 };
