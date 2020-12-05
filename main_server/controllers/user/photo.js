@@ -8,6 +8,9 @@ module.exports = {
   post: router.use('/', upload.single('image'), async (req, res) => {
     const userId = req.userId;
     const { transforms } = req.file;
+    if (!transforms) {
+      return res.status(400).end();
+    }
 
     const photos = {
       photo: transforms.filter((el) => el.id === 'original')[0].location,
@@ -29,7 +32,7 @@ module.exports = {
       //
     } catch (error) {
       console.error(error);
-      res.status(400).end();
+      res.status(500).end();
     }
   }),
 };

@@ -1,11 +1,11 @@
 module.exports = (req, res) => {
-  res //
-    .status(200)
-    .cookie('token', 'null', {
+  res
+    .clearCookie('token', {
       httpOnly: true,
       secure: true,
       sameSite: 'none',
       domain: '.codestates-project.tk',
     })
-    .json({ msg: 'logout' });
+    .status(200)
+    .end();
 };

@@ -6,6 +6,9 @@ module.exports = {
     const userId = req.userId;
     const { postId, likeChecked } = req.body;
     // console.log(userId, postId, likeChecked);
+    if (!postId || likeChecked === undefined) {
+      return res.status(400).end();
+    }
 
     if (likeChecked) {
       try {
@@ -19,7 +22,7 @@ module.exports = {
         //
       } catch (error) {
         console.error(error);
-        res.status(400).end();
+        res.status(500).end();
       }
       //
     } else {
@@ -34,7 +37,7 @@ module.exports = {
         //
       } catch (error) {
         console.error(error);
-        res.status(400).end();
+        res.status(500).end();
       }
     }
   },
