@@ -5,6 +5,9 @@ module.exports = {
   post: async (req, res) => {
     const userId = req.userId;
     const { postId, text } = req.body;
+    if (!postId || !text) {
+      return res.status(400).end();
+    }
 
     try {
       const commentCreated = await Comment.create({ userId, postId, text });
@@ -12,7 +15,7 @@ module.exports = {
       //
     } catch (error) {
       console.error(error);
-      res.status(400).end();
+      res.status(500).end();
     }
   },
 
@@ -20,6 +23,9 @@ module.exports = {
   patch: async (req, res) => {
     const userId = req.userId;
     const { commentId, text } = req.body;
+    if (!commentId || !text) {
+      return res.status(400).end();
+    }
 
     try {
       const commentUpdated = await Comment.update(
@@ -35,13 +41,13 @@ module.exports = {
       );
 
       if (commentUpdated[0] !== 1) {
-        return res.status(403).json({ error: '403 Forbidden' });
+        return res.status(403).end();
       }
       res.status(201).json({ msg: 'comment updated' });
       //
     } catch (error) {
       console.error(error);
-      res.status(400).end();
+      res.status(500).end();
     }
   },
 
@@ -49,6 +55,9 @@ module.exports = {
   delete: async (req, res) => {
     const userId = req.userId;
     const { commentId } = req.body;
+    if (!commentId) {
+      return res.status(400).end();
+    }
 
     try {
       const commentDeleted = await Comment.destroy({
@@ -56,13 +65,13 @@ module.exports = {
       });
 
       if (commentDeleted !== 1) {
-        return res.status(403).json({ error: '403 Forbidden' });
+        return res.status(403).end();
       }
       res.status(200).json({ msg: 'comment deleted' });
       //
     } catch (error) {
       console.error(error);
-      res.status(400).end();
+      res.status(500).end();
     }
   },
 };

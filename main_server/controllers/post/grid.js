@@ -5,6 +5,15 @@ module.exports = {
   getGridData: async (req, res) => {
     const { from, offset, count } = req.body;
     let { userId } = req.body;
+    if (
+      !count ||
+      /* offset,from,userId는 0으로 요청이 올 수 있어서 !로 빈값 여부 체크하면 안됨 */
+      offset === undefined ||
+      from === undefined ||
+      userId === undefined
+    ) {
+      res.status(400).end();
+    }
 
     if (userId === 0) {
       // userId 0으로 요청 들어오면, 유저 구분없이
@@ -36,7 +45,7 @@ module.exports = {
       //
     } catch (error) {
       console.error(error);
-      res.status(400).end();
+      res.status(500).end();
     }
   },
 };

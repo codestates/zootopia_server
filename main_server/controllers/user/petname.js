@@ -5,6 +5,9 @@ module.exports = {
   patch: async (req, res) => {
     const userId = req.userId;
     const { petName } = req.body;
+    if (!petName) {
+      return res.status(400).end();
+    }
 
     const check = await User.findOne({
       attributes: ['id'],
@@ -31,7 +34,7 @@ module.exports = {
       res.status(201).json({ msg: 'petName updated' });
     } catch (error) {
       console.error(error);
-      res.status(400).end();
+      res.status(500).end();
     }
   },
 };
