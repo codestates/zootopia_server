@@ -1,8 +1,8 @@
-const { User } = require('../../models');
+const { User, Post, sequelize } = require('../../models');
 //
 module.exports = {
   //get UserInfo
-  get: async (req, res) => {
+  get: (req, res) => {
     let { userId } = req.params;
 
     if (userId === '0') {
@@ -11,7 +11,7 @@ module.exports = {
     }
 
     try {
-      const user = await User.findOne({
+      const user = User.findOne({
         attributes: [
           ['id', 'userId'],
           'photo',
@@ -24,13 +24,30 @@ module.exports = {
         },
       });
 
-      res.status(200).json(user);
+      const postCount = Post.findAll({
+        attributes: [[sequelize.fn('COUNT', sequelize.col('id')), 'postCount']],
+        where: {
+          userId,
+        },
+      });
+
+      Promise.all([user, postCount]) //
+        .then(([user, postCount]) => {
+          const result = {
+            ...user.toJSON(),
+            ...postCount[0].toJSON(),
+          };
+
+          res.status(200).json(result);
+        });
+
       //
     } catch (error) {
       console.error(error);
-      res.status(400).end();
+      res.status(500).end();
     }
   },
+
   // delete account
   delete: async (req, res) => {
     const userId = req.userId;
@@ -44,7 +61,7 @@ module.exports = {
       //
     } catch (error) {
       console.error(error);
-      res.status(400).end();
+      res.status(500).end();
     }
   },
 };
