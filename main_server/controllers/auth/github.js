@@ -53,7 +53,7 @@ module.exports = async (req, res) => {
         sameSite: 'none',
         domain: '.codestates-project.tk',
       })
-      .redirect(`https://www.codestates-project.tk`);
+      .redirect(`https://www.codestates-project.tk/main`);
   } catch (error) {
     console.error(error);
     res.status(500).end();

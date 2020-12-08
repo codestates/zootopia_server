@@ -24,7 +24,7 @@ module.exports = {
           'picture_1',
           'picture_2',
           'picture_3',
-          ['createdAt', 'time'],
+          'createdAt',
         ],
         where: {
           id: postId,
@@ -42,7 +42,7 @@ module.exports = {
           },
           {
             model: Comment,
-            attributes: [['id', 'commentId'], 'text', ['createdAt', 'time']],
+            attributes: [['id', 'commentId'], 'text', 'createdAt'],
             include: [
               {
                 model: User,
@@ -50,7 +50,7 @@ module.exports = {
               },
               {
                 model: Reply,
-                attributes: [['id', 'replyId'], 'text', ['createdAt', 'time']],
+                attributes: [['id', 'replyId'], 'text', 'createdAt'],
                 include: [
                   {
                     model: User,
@@ -96,7 +96,7 @@ module.exports = {
             picture_3: DATA.picture_3,
             likeCount: likeCount[0].dataValues.n_id,
             likeChecked: likeFounded ? true : false,
-            time: DATA.time,
+            time: DATA.createdAt,
           };
           const comments = DATA.Comments.map((el) => ({
             commentId: el.commentId,
@@ -105,7 +105,7 @@ module.exports = {
             petName: el.User.petName,
             breed: el.User.breed,
             text: el.text,
-            time: el.time,
+            time: el.createdAt,
             replies: el.Replies.map((el) => ({
               replyId: el.replyId,
               userId: el.User.userId,
@@ -113,7 +113,7 @@ module.exports = {
               petName: el.User.petName,
               breed: el.User.breed,
               text: el.text,
-              time: el.time,
+              time: el.createdAt,
             })),
           }));
 
