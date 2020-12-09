@@ -19,7 +19,7 @@ module.exports = {
     try {
       const DATA = Post.findOne({
         attributes: [
-          ['id', 'postId'],
+          'id',
           'text',
           'picture_1',
           'picture_2',
@@ -42,24 +42,19 @@ module.exports = {
           },
           {
             model: Comment,
-            attributes: [['id', 'commentId'], 'text', 'createdAt'],
+            attributes: ['id', 'text', 'createdAt'],
             include: [
               {
                 model: User,
-                attributes: [['id', 'userId'], 'thumbnail', 'petName', 'breed'],
+                attributes: ['id', 'thumbnail', 'petName', 'breed'],
               },
               {
                 model: Reply,
-                attributes: [['id', 'replyId'], 'text', 'createdAt'],
+                attributes: ['id', 'text', 'createdAt'],
                 include: [
                   {
                     model: User,
-                    attributes: [
-                      ['id', 'userId'],
-                      'thumbnail',
-                      'petName',
-                      'breed',
-                    ],
+                    attributes: ['id', 'thumbnail', 'petName', 'breed'],
                   },
                 ],
               },
@@ -89,7 +84,7 @@ module.exports = {
           // DATA transform for Client
           const user = DATA.User;
           const post = {
-            postId: DATA.postId,
+            postId: DATA.id,
             text: DATA.text,
             picture_1: DATA.picture_1,
             picture_2: DATA.picture_2,
@@ -99,16 +94,16 @@ module.exports = {
             time: DATA.createdAt,
           };
           const comments = DATA.Comments.map((el) => ({
-            commentId: el.commentId,
-            userId: el.User.userId,
+            commentId: el.id,
+            userId: el.User.id,
             thumbnail: el.User.thumbnail,
             petName: el.User.petName,
             breed: el.User.breed,
             text: el.text,
             time: el.createdAt,
             replies: el.Replies.map((el) => ({
-              replyId: el.replyId,
-              userId: el.User.userId,
+              replyId: el.id,
+              userId: el.User.id,
               thumbnail: el.User.thumbnail,
               petName: el.User.petName,
               breed: el.User.breed,
