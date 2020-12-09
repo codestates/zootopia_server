@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const findOrCreate = require('mongoose-findorcreate')
+const moment = require('moment')
 
 const { Schema } = mongoose;
 const { Types: { ObjectId } } = Schema;
@@ -15,8 +16,8 @@ const chatSchema = new Schema({
   },
   text: String, 
   createdAt: {
-    type: Date,
-    default: Date.now,
+    type: String,
+    default: moment().format('YY-MM-DD h:mm a')
   },
 });
 
