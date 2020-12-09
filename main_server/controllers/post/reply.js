@@ -1,17 +1,70 @@
-const { Reply } = require('../../models');
+const { Comment, Post, User, Reply } = require('../../models');
 //
 module.exports = {
   // new reply *
   post: async (req, res) => {
     const userId = req.userId;
-    const { commentId, text } = req.body;
-    if (!commentId || !text) {
+    const { postId, commentId, text } = req.body;
+    if ((!postId, !commentId || !text)) {
       return res.status(400).end();
     }
 
     try {
-      const replyCreated = await Reply.create({ userId, commentId, text });
-      res.status(201).json({ replyId: replyCreated.id });
+      await Reply.create({ userId, commentId, text });
+
+      const DATA = await Post.findOne({
+        where: {
+          id: postId,
+        },
+        include: [
+          {
+            model: Comment,
+            attributes: [['id', 'commentId'], 'text', 'createdAt'],
+            include: [
+              {
+                model: User,
+                attributes: [['id', 'userId'], 'thumbnail', 'petName', 'breed'],
+              },
+              {
+                model: Reply,
+                attributes: [['id', 'replyId'], 'text', 'createdAt'],
+                include: [
+                  {
+                    model: User,
+                    attributes: [
+                      ['id', 'userId'],
+                      'thumbnail',
+                      'petName',
+                      'breed',
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      });
+
+      const comments = DATA.Comments.map((el) => ({
+        commentId: el.commentId,
+        userId: el.User.userId,
+        thumbnail: el.User.thumbnail,
+        petName: el.User.petName,
+        breed: el.User.breed,
+        text: el.text,
+        time: el.createdAt,
+        replies: el.Replies.map((el) => ({
+          replyId: el.replyId,
+          userId: el.User.userId,
+          thumbnail: el.User.thumbnail,
+          petName: el.User.petName,
+          breed: el.User.breed,
+          text: el.text,
+          time: el.createdAt,
+        })),
+      }));
+
+      res.status(201).json(comments);
       //
     } catch (error) {
       console.error(error);
@@ -22,8 +75,8 @@ module.exports = {
   // update reply *
   patch: async (req, res) => {
     const userId = req.userId;
-    const { replyId, text } = req.body;
-    if (!replyId || !text) {
+    const { postId, replyId, text } = req.body;
+    if (!postId || !replyId || !text) {
       return res.status(400).end();
     }
 
@@ -42,7 +95,60 @@ module.exports = {
       if (replyUpdated[0] !== 1) {
         return res.status(400).end();
       }
-      res.status(201).json({ msg: 'reply updated' });
+
+      const DATA = await Post.findOne({
+        where: {
+          id: postId,
+        },
+        include: [
+          {
+            model: Comment,
+            attributes: [['id', 'commentId'], 'text', 'createdAt'],
+            include: [
+              {
+                model: User,
+                attributes: [['id', 'userId'], 'thumbnail', 'petName', 'breed'],
+              },
+              {
+                model: Reply,
+                attributes: [['id', 'replyId'], 'text', 'createdAt'],
+                include: [
+                  {
+                    model: User,
+                    attributes: [
+                      ['id', 'userId'],
+                      'thumbnail',
+                      'petName',
+                      'breed',
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      });
+
+      const comments = DATA.Comments.map((el) => ({
+        commentId: el.commentId,
+        userId: el.User.userId,
+        thumbnail: el.User.thumbnail,
+        petName: el.User.petName,
+        breed: el.User.breed,
+        text: el.text,
+        time: el.createdAt,
+        replies: el.Replies.map((el) => ({
+          replyId: el.replyId,
+          userId: el.User.userId,
+          thumbnail: el.User.thumbnail,
+          petName: el.User.petName,
+          breed: el.User.breed,
+          text: el.text,
+          time: el.createdAt,
+        })),
+      }));
+
+      res.status(201).json(comments);
       //
     } catch (error) {
       console.error(error);
@@ -53,8 +159,8 @@ module.exports = {
   // delete reply *
   delete: async (req, res) => {
     const userId = req.userId;
-    const { replyId } = req.body;
-    if (!replyId) {
+    const { postId, replyId } = req.body;
+    if (!postId || !replyId) {
       return res.status(400).end();
     }
 
@@ -65,7 +171,60 @@ module.exports = {
       if (replyDeleted !== 1) {
         return res.status(400).end();
       }
-      res.status(200).json({ msg: 'reply deleted' });
+
+      const DATA = await Post.findOne({
+        where: {
+          id: postId,
+        },
+        include: [
+          {
+            model: Comment,
+            attributes: [['id', 'commentId'], 'text', 'createdAt'],
+            include: [
+              {
+                model: User,
+                attributes: [['id', 'userId'], 'thumbnail', 'petName', 'breed'],
+              },
+              {
+                model: Reply,
+                attributes: [['id', 'replyId'], 'text', 'createdAt'],
+                include: [
+                  {
+                    model: User,
+                    attributes: [
+                      ['id', 'userId'],
+                      'thumbnail',
+                      'petName',
+                      'breed',
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      });
+
+      const comments = DATA.Comments.map((el) => ({
+        commentId: el.commentId,
+        userId: el.User.userId,
+        thumbnail: el.User.thumbnail,
+        petName: el.User.petName,
+        breed: el.User.breed,
+        text: el.text,
+        time: el.createdAt,
+        replies: el.Replies.map((el) => ({
+          replyId: el.replyId,
+          userId: el.User.userId,
+          thumbnail: el.User.thumbnail,
+          petName: el.User.petName,
+          breed: el.User.breed,
+          text: el.text,
+          time: el.createdAt,
+        })),
+      }));
+
+      res.status(200).json(comments);
       //
     } catch (error) {
       console.error(error);
