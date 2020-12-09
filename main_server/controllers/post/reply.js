@@ -18,25 +18,30 @@ module.exports = {
         },
         include: [
           {
+            model: User,
+            attributes: [
+              ['id', 'userId'],
+              'photo',
+              'thumbnail',
+              'petName',
+              'breed',
+            ],
+          },
+          {
             model: Comment,
-            attributes: [['id', 'commentId'], 'text', 'createdAt'],
+            attributes: ['id', 'text', 'createdAt'],
             include: [
               {
                 model: User,
-                attributes: [['id', 'userId'], 'thumbnail', 'petName', 'breed'],
+                attributes: ['id', 'thumbnail', 'petName', 'breed'],
               },
               {
                 model: Reply,
-                attributes: [['id', 'replyId'], 'text', 'createdAt'],
+                attributes: ['id', 'text', 'createdAt'],
                 include: [
                   {
                     model: User,
-                    attributes: [
-                      ['id', 'userId'],
-                      'thumbnail',
-                      'petName',
-                      'breed',
-                    ],
+                    attributes: ['id', 'thumbnail', 'petName', 'breed'],
                   },
                 ],
               },
@@ -46,16 +51,16 @@ module.exports = {
       });
 
       const comments = DATA.Comments.map((el) => ({
-        commentId: el.commentId,
-        userId: el.User.userId,
+        commentId: el.id,
+        userId: el.User.id,
         thumbnail: el.User.thumbnail,
         petName: el.User.petName,
         breed: el.User.breed,
         text: el.text,
         time: el.createdAt,
         replies: el.Replies.map((el) => ({
-          replyId: el.replyId,
-          userId: el.User.userId,
+          replyId: el.id,
+          userId: el.User.id,
           thumbnail: el.User.thumbnail,
           petName: el.User.petName,
           breed: el.User.breed,
@@ -102,25 +107,30 @@ module.exports = {
         },
         include: [
           {
+            model: User,
+            attributes: [
+              ['id', 'userId'],
+              'photo',
+              'thumbnail',
+              'petName',
+              'breed',
+            ],
+          },
+          {
             model: Comment,
-            attributes: [['id', 'commentId'], 'text', 'createdAt'],
+            attributes: ['id', 'text', 'createdAt'],
             include: [
               {
                 model: User,
-                attributes: [['id', 'userId'], 'thumbnail', 'petName', 'breed'],
+                attributes: ['id', 'thumbnail', 'petName', 'breed'],
               },
               {
                 model: Reply,
-                attributes: [['id', 'replyId'], 'text', 'createdAt'],
+                attributes: ['id', 'text', 'createdAt'],
                 include: [
                   {
                     model: User,
-                    attributes: [
-                      ['id', 'userId'],
-                      'thumbnail',
-                      'petName',
-                      'breed',
-                    ],
+                    attributes: ['id', 'thumbnail', 'petName', 'breed'],
                   },
                 ],
               },
@@ -130,16 +140,16 @@ module.exports = {
       });
 
       const comments = DATA.Comments.map((el) => ({
-        commentId: el.commentId,
-        userId: el.User.userId,
+        commentId: el.id,
+        userId: el.User.id,
         thumbnail: el.User.thumbnail,
         petName: el.User.petName,
         breed: el.User.breed,
         text: el.text,
         time: el.createdAt,
         replies: el.Replies.map((el) => ({
-          replyId: el.replyId,
-          userId: el.User.userId,
+          replyId: el.id,
+          userId: el.User.id,
           thumbnail: el.User.thumbnail,
           petName: el.User.petName,
           breed: el.User.breed,
@@ -178,25 +188,30 @@ module.exports = {
         },
         include: [
           {
+            model: User,
+            attributes: [
+              ['id', 'userId'],
+              'photo',
+              'thumbnail',
+              'petName',
+              'breed',
+            ],
+          },
+          {
             model: Comment,
-            attributes: [['id', 'commentId'], 'text', 'createdAt'],
+            attributes: ['id', 'text', 'createdAt'],
             include: [
               {
                 model: User,
-                attributes: [['id', 'userId'], 'thumbnail', 'petName', 'breed'],
+                attributes: ['id', 'thumbnail', 'petName', 'breed'],
               },
               {
                 model: Reply,
-                attributes: [['id', 'replyId'], 'text', 'createdAt'],
+                attributes: ['id', 'text', 'createdAt'],
                 include: [
                   {
                     model: User,
-                    attributes: [
-                      ['id', 'userId'],
-                      'thumbnail',
-                      'petName',
-                      'breed',
-                    ],
+                    attributes: ['id', 'thumbnail', 'petName', 'breed'],
                   },
                 ],
               },
@@ -206,16 +221,16 @@ module.exports = {
       });
 
       const comments = DATA.Comments.map((el) => ({
-        commentId: el.commentId,
-        userId: el.User.userId,
+        commentId: el.id,
+        userId: el.User.id,
         thumbnail: el.User.thumbnail,
         petName: el.User.petName,
         breed: el.User.breed,
         text: el.text,
         time: el.createdAt,
         replies: el.Replies.map((el) => ({
-          replyId: el.replyId,
-          userId: el.User.userId,
+          replyId: el.id,
+          userId: el.User.id,
           thumbnail: el.User.thumbnail,
           petName: el.User.petName,
           breed: el.User.breed,
