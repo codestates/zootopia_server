@@ -5,14 +5,23 @@ const Chat = require('../schemas/chat')
 
 const router = express.Router()
 
-router.post('/:roomId',(req, res)=>{
-  res.send('it works')
+router.post('/:roomId',async (req, res)=>{// 채팅 보내기   
+  const chat = await Chat.create({
+      room: req.params.roomId,
+      user: req.userId,
+      text: req.body.text
+  })
+  const io = req.app.get('io');
+  io.to(roomId).emit('newMessage', chat);
+  res.status(201).send(chat)
 })
 
-router.get('/:roomId',(req, res)=> {
-    res.send('it works like magic')
+router.get('/:roomId',async (req, res)=> {// 채팅 받기 
+  const chat = await Chat.find({ room: roomId})  
+  res.status(201).send(chat)
 })
 
+//채팅방 나가기 
 
 
 
