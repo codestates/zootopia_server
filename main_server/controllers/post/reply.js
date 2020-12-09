@@ -64,7 +64,7 @@ module.exports = {
         })),
       }));
 
-      res.status(201).json(comments);
+      res.status(201).json({ comments });
       //
     } catch (error) {
       console.error(error);
@@ -148,7 +148,7 @@ module.exports = {
         })),
       }));
 
-      res.status(201).json(comments);
+      res.status(201).json({ comments });
       //
     } catch (error) {
       console.error(error);
@@ -224,7 +224,7 @@ module.exports = {
         })),
       }));
 
-      res.status(200).json(comments);
+      res.status(200).json({ comments });
       //
     } catch (error) {
       console.error(error);
