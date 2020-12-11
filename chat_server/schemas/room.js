@@ -7,10 +7,10 @@ const roomSchema = new Schema( {
   title: {
     type:String,
     required: true       
-  },
-  count:{
+  },  
+  master:{
     type:Number,
-    default:1
+    required:true
   }
    
 });
