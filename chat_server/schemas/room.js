@@ -1,20 +1,29 @@
 const mongoose = require('mongoose');
-const findOrCreate = require('mongoose-findorcreate')
+const moment = require('moment')
 
 const { Schema } = mongoose;
-const { Types: { ObjectId } } = Schema;
-const roomSchema = new Schema( { 
-  title: {
+const roomSchema = new Schema({  
+  type:{
     type:String,
-    required: true       
-  },  
-  master:{
+    required: true
+  },
+  users:[{
+    id:Number,
+    unread:Boolean,
+    inRoom:Boolean,
+    _id: false
+  }],  
+  left:[{
+    id:Number
+  }],  
+  owner: {
     type:Number,
-    required:true
-  }
-   
+    required: true,
+  },   
+  createdAt: {
+    type: String,
+    default: moment().format('YY-MM-DD h:mm a'),
+  },
 });
-
-roomSchema.plugin(findOrCreate);
 
 module.exports = mongoose.model('Room', roomSchema);
