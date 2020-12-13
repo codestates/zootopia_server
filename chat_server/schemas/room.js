@@ -7,19 +7,19 @@ const roomSchema = new Schema({
     type:String,
     required: true
   },
+  title:{
+    type:String
+  },
   users:[{
     id:Number,
-    unread:Boolean,
+    unRead:Boolean,
     inRoom:Boolean,
     _id: false
   }],  
   left:[{
-    id:Number
+    id:Number,
+    _id:false
   }],  
-  owner: {
-    type:Number,
-    required: true,
-  },   
   createdAt: {
     type: String,
     default: moment().format('YY-MM-DD h:mm a'),
