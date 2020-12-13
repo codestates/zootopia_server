@@ -40,8 +40,14 @@ module.exports = {
         limit: count,
       });
 
+      // End point check
+      let final = false;
+      if (gridData.length < count) {
+        final = true;
+      }
+
       // console.log(gridData);
-      res.status(200).json(gridData);
+      res.status(200).json({ final, postData: gridData });
       //
     } catch (error) {
       console.error(error);
