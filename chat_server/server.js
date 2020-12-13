@@ -74,8 +74,17 @@ io.on('connection',async (socket) =>{
   console.log('user connected')  
   socket.id = socket.request.userId     
 
-  socket.on('disconnect', () => {
+  socket.on('disconnect', async () => {
     console.log('user disconneted');
-   });
+    const room = await Room.find({type:'비공개 채팅방', users:{ $elemMatch: { id:socket.id }}})    
+    for(let i=0; i< room.length; i++){      
+      if(room[i].users[0].id === socket.id){
+        let result = await Room.findByIdAndUpdate(room[i]._id,{ $set:{ 'users.0.inRoom': false }})        
+      }
+      else if(room[i].users[1].id === socket.id){
+        let result = await Room.findByIdAndUpdate(room[i]._id,{ $set:{ 'users.1.inRoom': false }})
+      }
+    }
+   });   
 })
 

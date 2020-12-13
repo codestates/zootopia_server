@@ -23,7 +23,7 @@ router.get('/:roomId',async (req, res)=> {// 채팅 받기
   res.status(201).send(chat)
 })
 
-//채팅방 나가기 
+
 
 
 
