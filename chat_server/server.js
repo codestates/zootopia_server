@@ -17,6 +17,7 @@ dotenv.config();
 const Room = require('./schemas/room');
 const Chat = require('./schemas/chat');
 
+
 // app.set('port', process.env.PORT);
 
 const port = 3002;
@@ -71,45 +72,9 @@ io.use((socket, next) =>{
 
 io.on('connection',async (socket) =>{
   console.log('user connected')  
-  socket.id = socket.request.userId 
-  
-  //맨 처음에 접속 했을 때 방 목록을 받아옴 
-  // const room = await Room.find({})  
-  // socket.emit('getRoom', room)
+  socket.id = socket.request.userId     
 
-  socket.on('joinRoom', async (roomId) => {        
-    socket.join(roomId)
-    const chat = await Chat.find({room: roomId})    
-
-    //   new: true
-    // })        
-    socket.emit('renderChat', chat)
-    // io.emit('roomUpdate', roomId, count)    
-  })
-  
-   socket.on('leaveRoom', async (roomId, userId) =>{
-     
-     
-      // const room = await Room.findById(roomId)      
-      const deleted = await Room.findOneAndDelete({_id: roomId, master:userId},{remove: false, new:true} ,function(err,doc){
-        if(err){
-          console.log(err)
-        }
-        console.log(doc)
-      })        
-      // if(room.master === userId){
-      //   console.log('it works')
-      //   const deleted = await Room.findOneAndDelete({_id: roomId, master:userId},{new:true} ,function(err,doc){
-      //     if(err){
-      //       console.log(err)
-      //     }
-      //     console.log(doc)
-      //   })        
-      // }      
-    
-  })
-
-   socket.on('disconnect', () => {
+  socket.on('disconnect', () => {
     console.log('user disconneted');
    });
 })
