@@ -35,40 +35,40 @@ router.get('/:id', async (req, res)=>{ //
   비공개 채팅방일 경우 확인하지 않은 메세지가 있으면 '확인하지 않은 메세지가 있습니다 띄워야 함'
 */
 
-router.post('public/:id', async(req, res)=> {  // 공개 채팅용 방 만들기 
+router.post('/public/:id', async(req, res)=> {  // 공개 채팅용 방 만들기 
   try {
     const {title} = req.body
     const {id} = req.params
     const room = await Room.create({
+      type: '공개 채팅방',
       title: title,       
       users:[{
-        id:id,
-        unread: false,
-        inRoom:false
+        id:id       
       }],  
       left:[]
     });
-             
+     
     req.app.get('io').emit('newPublic', room);
-    res.status(201).send('ok')    
+    res.status(201).send(room)    
   } catch (error) {
     console.error(error);    
   }
 })
 
-router.post('private/:id', async(req, res)=> {  // 비공개 채팅용 방 만들기 
+router.post('/private/:id', async(req, res)=> {  // 비공개 채팅용 방 만들기 
   try {
     const {title, myId} = req.body
     const {id} = req.params
     const room = await Room.create({
-      title: title,       
+      type: '비공개 채팅방',           
       users:[{
         id:myId,
-        unread: false,
-        inRoom:false
+        unRead: false,
+        inRoom:false,
+        isOnline:true
       },{
         id:id,
-        unread: false,
+        unRead: false,
         inRoom:false
       }],  
       left:[]
@@ -97,9 +97,10 @@ state에서 room 정보와 일치하는 배열을 찾고 splice 한다.
 
 router.post('/:roomId',async (req, res)=>{// 방 나가기, 
   const{ id } = req.body
-  const {roomId} = req.params
+  const { roomId } = req.params
 
-  const room = await Room.findByIdAndUpdate(roomId,{$push: { left: {id:id}}, $pull: {users:{id:id}} },{ new:true })  
+  const room = await Room.findByIdAndUpdate(roomId,{$push: { left: {id:id}}, $pull: {users:{id:id}} },{ new:true })
+  req.app.get('io').emit('roomUpdate', room)
   res.status(201).send('ok')
 })
 
