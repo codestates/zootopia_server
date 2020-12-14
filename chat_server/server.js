@@ -70,19 +70,37 @@ io.use((socket, next) =>{
   socket.request.userId = 5; 
 })
 
-io.on('connection',async (socket) =>{
+io.on('connection', async (socket) =>{
   console.log('user connected')  
   socket.id = socket.request.userId     
+  // 첫 연결 시 온라인 상태로 변경
+  const online = await Room.find({type:'비공개 채팅방', users:{ $elemMatch: { id:socket.id }}}) 
 
+    for(let i=0; i< online.length; i++){      
+      if(online[i].users[0].id === socket.id){
+         await Room.findByIdAndUpdate(online[i]._id,{ $set:{ 'users.0.isOnline': true }})        
+      }
+      else if(online[i].users[1].id === socket.id){
+        await Room.findByIdAndUpdate(online[i]._id,{ $set:{ 'users.1.isOnline': true }})
+      }
+    }
+     
+  // 방 목록에서 다른 방으로 이동할 시 
+  socket.on('leaveChat', async (roomId) =>{
+    const room = await Room.findByIdAndUpdate(roomId, { $set:{ 'users.0.inRoom': false }})
+  })
+
+  // 연결 해제시 상태 변경
   socket.on('disconnect', async () => {
     console.log('user disconneted');
-    const room = await Room.find({type:'비공개 채팅방', users:{ $elemMatch: { id:socket.id }}})    
-    for(let i=0; i< room.length; i++){      
-      if(room[i].users[0].id === socket.id){
-        let result = await Room.findByIdAndUpdate(room[i]._id,{ $set:{ 'users.0.inRoom': false }})        
+    
+    const offline = await Room.find({type:'비공개 채팅방', users:{ $elemMatch: { id:socket.id }}})    
+    for(let i=0; i< offline.length; i++){      
+      if(offline[i].users[0].id === socket.id){
+        const result = await Room.findByIdAndUpdate(offline[i]._id,{ $set:{ 'users.0.inRoom': false, 'users.0.isOnline': false }})        
       }
-      else if(room[i].users[1].id === socket.id){
-        let result = await Room.findByIdAndUpdate(room[i]._id,{ $set:{ 'users.1.inRoom': false }})
+      else if(offline[i].users[1].id === socket.id){
+        const result = await Room.findByIdAndUpdate(offline[i]._id,{ $set:{ 'users.1.inRoom': false ,'users.1.isOnline': false}})
       }
     }
    });   

@@ -14,6 +14,7 @@ const roomSchema = new Schema({
     id:Number,
     unRead:Boolean,
     inRoom:Boolean,
+    isOnline:Boolean,
     _id: false
   }],  
   left:[{
