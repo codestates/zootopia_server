@@ -10,6 +10,6 @@ module.exports = (req, file, callback) => {
   if (mimetype && extname) {
     return callback(null, true);
   } else {
-    return callback('Error::: not allowed. Please check your file type', false);
+    return callback('Error::: not allowed. Check your file type', false);
   }
 };
