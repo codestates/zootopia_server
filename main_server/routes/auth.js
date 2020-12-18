@@ -12,6 +12,7 @@ router.get('/google', authController.google);
 // Guest signin
 router.get('/guest', authController.guest);
 
+// logout
 router.post('/logout', authController.logout);
 
 module.exports = router;
