@@ -32,6 +32,12 @@ module.exports = {
 
       Promise.all([user, postCount]) //
         .then(([user, postCount]) => {
+          if (!user) {
+            return res
+              .status(400)
+              .json({ error: 'request with invalid userId' });
+          }
+
           const result = {
             ...user.toJSON(),
             ...postCount[0].toJSON(),
