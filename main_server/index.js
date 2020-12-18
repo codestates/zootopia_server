@@ -14,7 +14,7 @@ app.use(
   express.json(),
   express.urlencoded({ extended: false }),
   cookieParser(),
-  morgan('dev'),
+  morgan(`${process.env.NODE_ENV === 'production' ? 'combined' : 'dev'}`),
   cors({
     origin: true,
     credentials: true,
@@ -25,10 +25,9 @@ app.use(
 app.get('/', (req, res) => {
   res.status(200).send('server on');
 });
-
 app.use('/auth', require('./routes/auth'));
 app.use((req, res, next) => {
-  // 로그인 이외 요청은, 토큰이 담긴 상태여야 하므로 여기서 토큰 검사
+  // 로그인 이외 요청은, 토큰이 담긴 상태여야 하므로 여기서 미들웨어로 토큰 검사
   jwtUtility.verifyTokenId(req, res, next);
 });
 app.use('/user', require('./routes/user'));

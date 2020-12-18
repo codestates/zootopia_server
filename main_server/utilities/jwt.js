@@ -14,7 +14,7 @@ module.exports = {
   verifyTokenId: (req, res, next) => {
     try {
       const decoded = jwt.verify(req.cookies.token, process.env.JWT_SECRET_KEY);
-      console.log('================== token verified!');
+      // console.log('================== token verified!');
       req.userId = decoded.id;
       next();
     } catch (error) {

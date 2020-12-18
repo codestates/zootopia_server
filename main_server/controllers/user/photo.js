@@ -16,7 +16,6 @@ module.exports = {
       photo: transforms.filter((el) => el.id === 'original')[0].location,
       thumbnail: transforms.filter((el) => el.id === 'thumbnail')[0].location,
     };
-
     try {
       await User.update(
         {

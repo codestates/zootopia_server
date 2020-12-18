@@ -32,6 +32,7 @@ module.exports = {
         },
       );
       res.status(201).json({ msg: 'petName updated' });
+      //
     } catch (error) {
       console.error(error);
       res.status(500).end();

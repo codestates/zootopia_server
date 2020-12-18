@@ -10,9 +10,6 @@ module.exports = async (req, res) => {
       ...makeProfile.guest(),
       type: 'guest',
     });
-
-    // console.log(userCreated.toJSON());
-    // sign a JWT token
     const token = jwtUtility.sign(userCreated.id);
 
     res //
