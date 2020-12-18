@@ -4,7 +4,9 @@
   "description": "codestates final project by Full IM23 team No.5",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pm2": "NODE_ENV=production PORT=3000 pm2 start main_server/index.js",
+    "start": "NODE_ENV=production PORT=3000 node main_server/index.js",
+    "dev": "nodemon main_server/index.js"
   },
   "author": "",
   "license": "ISC",
