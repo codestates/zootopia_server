@@ -15,7 +15,7 @@ AWS.config.update({
 const upload = multer({
   storage: multerS3({
     s3: new AWS.S3(),
-    bucket: 'codestates-project-zootopia',
+    bucket: 'zootopiaimage',
     cacheControl: 'max-age=600000',
     contentType: multerS3.AUTO_CONTENT_TYPE,
     shouldTransform: true,

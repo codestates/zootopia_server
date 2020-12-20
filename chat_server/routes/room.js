@@ -1,11 +1,12 @@
 const express = require('express');
 const Room = require('../schemas/room');
+const moment = require('moment')
 
 const router = express.Router();
 
 //채팅 목록 가져오기
-router.get('/:id', async (req, res)=>{
-  try{
+router.get('/:id', async (req, res, next)=>{
+  try{    
     const { id } = req.params
     //공개 채팅방 목록 가져오기
     const public = await Room.find({type:'공개 채팅방', left: { $not: { $elemMatch:{ id:id }}
@@ -25,7 +26,7 @@ router.get('/:id', async (req, res)=>{
 })
 
 // 공개 채팅방 만들기 
-router.post('/public/:id', async(req, res)=> { 
+router.post('/public/:id', async(req, res, next)=> { 
   try {
     const { title } = req.body
     const { id } = req.params
@@ -35,7 +36,8 @@ router.post('/public/:id', async(req, res)=> {
       users:[{
         id:id       
       }],  
-      left:[]
+      left:[],
+      createdAt:moment().format('YY-MM-DD h:mm a')
     });
      
     req.app.get('io').emit('newPublic', room);
@@ -47,7 +49,7 @@ router.post('/public/:id', async(req, res)=> {
 })
 
 // 비공개 채팅방 만들기 
-router.post('/private/:id', async(req, res)=> {  
+router.post('/private/:id', async(req, res, next)=> {  
   try {
     const { myId } = req.body
     const { id } = req.params    
@@ -62,9 +64,10 @@ router.post('/private/:id', async(req, res)=> {
         id:id,
         unRead: false,
         inRoom:false,
-        isOnline:true
+        isOnline:false
       }],  
-      left:[]
+      left:[],
+      createdAt:moment().format('YY:MM:DD h:mm a')
     });
 
     req.app.get('io').emit('newPrivate', room, myId, id);
@@ -76,7 +79,7 @@ router.post('/private/:id', async(req, res)=> {
 })
 
 // 방 나가기, 
-router.post('/:roomId',async (req, res)=>{
+router.post('/:roomId',async (req, res, next)=>{
   try{
     const{ id } = req.body
     const { roomId } = req.params
