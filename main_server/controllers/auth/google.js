@@ -7,11 +7,9 @@ const redirect_uri = process.env.GOOGLE_REDIRECT_URI;
 //
 const { User } = require('../../models');
 const makeProfile = require('../../utilities/makeProfile');
-
 //
 module.exports = async (req, res) => {
   const { code } = req.query;
-  // console.log(code);
 
   try {
     const {
@@ -24,7 +22,6 @@ module.exports = async (req, res) => {
       },
       withCredentials: true,
     });
-
     const { email } = await jwtUtility.decode(id_token);
 
     const user = await User.findOrCreate({
@@ -37,8 +34,6 @@ module.exports = async (req, res) => {
         ...makeProfile.oAuth(),
       },
     });
-
-    // console.log(user[0].toJSON());
     const token = jwtUtility.sign(user[0].id);
 
     res

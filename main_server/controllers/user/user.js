@@ -4,7 +4,6 @@ module.exports = {
   //get UserInfo
   get: (req, res) => {
     let { userId } = req.params;
-
     if (userId === '0') {
       // parameter값이 0이라면 본인 프로필 데이터 요청이므로 jwt토큰에 담긴 userId값으로 탐색
       userId = req.userId;
@@ -33,6 +32,12 @@ module.exports = {
 
       Promise.all([user, postCount]) //
         .then(([user, postCount]) => {
+          if (!user) {
+            return res
+              .status(400)
+              .json({ error: 'request with invalid userId' });
+          }
+
           const result = {
             ...user.toJSON(),
             ...postCount[0].toJSON(),
@@ -40,7 +45,6 @@ module.exports = {
 
           res.status(200).json(result);
         });
-
       //
     } catch (error) {
       console.error(error);
@@ -56,7 +60,6 @@ module.exports = {
       await User.destroy({
         where: { id: userId },
       });
-
       res.status(201).json({ msg: 'user deleted' });
       //
     } catch (error) {

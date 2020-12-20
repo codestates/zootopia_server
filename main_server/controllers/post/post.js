@@ -122,11 +122,14 @@ module.exports = {
 
   // new post
   post: async (req, res) => {
+    console.log('post:125');
+
     const userId = req.userId;
     const { text } = req.body;
     if (!text || !req.files['image1'][0].transforms) {
       return res.status(400).end();
     }
+    console.log('post:130');
 
     const pictures = {
       picture_1: req.files['image1'][0].transforms.filter(
@@ -148,6 +151,8 @@ module.exports = {
     };
 
     try {
+      console.log('post:152');
+
       const postCreated = await Post.create({
         text,
         userId,
