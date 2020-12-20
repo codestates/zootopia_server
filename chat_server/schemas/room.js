@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const moment = require('moment')
+const findOrCreate = require('mongoose-findorcreate')
 
 const { Schema } = mongoose;
 const roomSchema = new Schema({  
@@ -21,10 +21,10 @@ const roomSchema = new Schema({
     id:Number,
     _id:false
   }],  
-  createdAt: {
-    type: String,
-    default: moment().format('YY-MM-DD h:mm a'),
-  },
+  createdAt: String
 });
+
+roomSchema.plugin(findOrCreate);
+
 
 module.exports = mongoose.model('Room', roomSchema);
