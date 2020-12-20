@@ -26,9 +26,10 @@ app.use(
     credentials: true,
   }),
 );
-
+// 요청오면 토큰 유효성 검사하기 
 app.use(verifytoken)
 
+// 라우팅
 app.use('/room',roomRouter)
 app.use('/chat',chatRouter)
 
@@ -55,14 +56,17 @@ app.set('io',io)
 
 io.use((socket, next) =>{
   cookieParser()(socket.request, {}, next);  
-  const decoded = jwt.verify(socket.request.cookies.token, process.env.JWT_SECRET_KEY);    
-  socket.request.userId = decoded.id; 
+  console.log('토큰은', socket.request.cookies.token)
+  const decoded = jwt.verify(socket.request.cookies.token, process.env.JWT_SECRET_KEY);     
+  socket.request.userId = decoded.id
 })
 
 io.on('connection', async (socket) =>{
      
-  socket.id = socket.request.userId     
-  // 첫 연결 시 온라인 상태로 변경
+  socket.id = socket.request.userId  
+  console.log('socket id is ', socket.id)
+  
+  // // 첫 연결 시 온라인 상태로 변경
   const online = await Room.find({type:'비공개 채팅방', users:{ $elemMatch: { id:socket.id }}}) 
 
     for(let i=0; i< online.length; i++){      
@@ -78,7 +82,7 @@ io.on('connection', async (socket) =>{
      
   
   // 연결 해제시 상태 변경
-  socket.on('disconnect', async () => {    
+  socket.on('disconnect', async () => {      
     
     const offline = await Room.find({type:'비공개 채팅방', users:{ $elemMatch: { id:socket.id }}})  
 

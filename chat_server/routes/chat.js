@@ -1,4 +1,5 @@
 const express = require('express');
+const moment = require('moment')
 
 const Room = require('../schemas/room')
 const Chat = require('../schemas/chat')
@@ -6,7 +7,7 @@ const Chat = require('../schemas/chat')
 const router = express.Router()
 
 // 채팅 보내기  
-router.post('/:roomId',async (req, res)=>{
+router.post('/:roomId',async (req, res, next)=>{
   try {
     const { roomId } = req.params 
     const { user, text } = req.body
@@ -15,7 +16,8 @@ router.post('/:roomId',async (req, res)=>{
     const chat = await Chat.create({
       room: roomId,
       user: user,
-      text: text
+      text: text,
+      createdAt:moment().format('YY-MM-DD h:mm a')
     })
     const update = await Room.findById(roomId)
 
@@ -30,10 +32,10 @@ router.post('/:roomId',async (req, res)=>{
         io.emit('roomUpdate', result)
       }  
   
-    io.emit('newMessage', chat); 
+    io.emit('newMessage', roomId, chat); 
 
     }else{
-    io.emit('newMessage', chat);
+    io.emit('newMessage', roomId, chat);
     }
   res.status(201).send('ok')
   }
@@ -43,12 +45,28 @@ router.post('/:roomId',async (req, res)=>{
 })
 
 // 채팅 렌더링
-router.get('/:roomId',async (req, res)=> {
+router.get('/:roomId',async (req, res, next)=> {
   try{
     const { roomId } = req.params;
-    const id = req.id
+    const id = req.userId
+    // const id = 1;
 
     const update = await Room.findById(roomId) 
+    
+    if(update.type === '공개 채팅방'){
+      let userIsIn = false
+
+      for(let i = 0; i < update.users.length; i++){
+        if(update.users[i].id === id){
+          userIsIn = true;
+        }
+      }
+
+      if(userIsIn === false){
+        const result = await Room.findByIdAndUpdate(roomId,{ $push:{ users:{id:id}} },{ new:true }) 
+        req.app.get('io').emit('roomUpdate', result)
+      }
+    }    
     
     if(update.type === '비공개 채팅방'){
 
@@ -72,7 +90,7 @@ router.get('/:roomId',async (req, res)=> {
 })
 
 // 다른 채팅방으로 옮겨 갈 시 
-router.post('/leave/:roomId',async (req, res)=>{ 
+router.post('/leave/:roomId',async (req, res, next)=>{ 
   try{
     const { roomId } = req.params 
     const { id } = req.body
