@@ -56,15 +56,13 @@ app.set('io',io)
 
 io.use((socket, next) =>{
   cookieParser()(socket.request, {}, next);  
-  console.log('토큰은', socket.request.cookies.token)
   const decoded = jwt.verify(socket.request.cookies.token, process.env.JWT_SECRET_KEY);     
   socket.request.userId = decoded.id
 })
 
 io.on('connection', async (socket) =>{
      
-  socket.id = socket.request.userId  
-  console.log('socket id is ', socket.id)
+  socket.id = socket.request.userId   
   
   // // 첫 연결 시 온라인 상태로 변경
   const online = await Room.find({type:'비공개 채팅방', users:{ $elemMatch: { id:socket.id }}}) 

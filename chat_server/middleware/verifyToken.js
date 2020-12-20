@@ -4,8 +4,7 @@ dotenv.config();
 
 exports.verifytoken = (req, res, next) => {
     try {
-        const decoded = jwt.verify(req.cookies.token, process.env.JWT_SECRET_KEY);
-        console.log('================== token verified!');
+        const decoded = jwt.verify(req.cookies.token, process.env.JWT_SECRET_KEY);        
         req.userId = decoded.id;
         req.username = decoded.username;
         next();
