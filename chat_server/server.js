@@ -70,11 +70,11 @@ io.on('connection', async (socket) =>{
     for(let i=0; i< online.length; i++){      
       if(online[i].users[0].id === socket.id){
         const onStatus = await Room.findByIdAndUpdate(online[i]._id,{ $set:{ 'users.0.isOnline': true }},{ new: true })  
-        socket.emit('roomUpdate', onStatus)      
+        io.emit('roomUpdate', onStatus)      
       }
       else if(online[i].users[1].id === socket.id){
         const onStatus = await Room.findByIdAndUpdate(online[i]._id,{ $set:{ 'users.1.isOnline': true }},{ new: true })
-        socket.emit('roomUpdate', onStatus)
+        io.emit('roomUpdate', onStatus)
       }
     }    
      
@@ -88,11 +88,11 @@ io.on('connection', async (socket) =>{
 
       if(offline[i].users[0].id === socket.id){
         const offStatus = await Room.findByIdAndUpdate(offline[i]._id,{ $set:{ 'users.0.inRoom': false, 'users.0.isOnline': false }},{ new: true })
-        socket.emit('roomUpdate', offStatus)        
+        io.emit('roomUpdate', offStatus)        
       }
       else if(offline[i].users[1].id === socket.id){
         const offStatus = await Room.findByIdAndUpdate(offline[i]._id,{ $set:{ 'users.1.inRoom': false ,'users.1.isOnline': false}},{ new: true })
-        socket.emit('roomUpdate', offStatus)
+        io.emit('roomUpdate', offStatus)
       }
     }
    });   
